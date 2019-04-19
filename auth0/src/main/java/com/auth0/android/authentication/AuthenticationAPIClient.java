@@ -270,6 +270,7 @@ public class AuthenticationAPIClient {
                 .set(USERNAME_KEY, usernameOrEmail)
                 .set(PASSWORD_KEY, password)
                 .set(AUDIENCE_KEY, audience)
+                .setGrantType(GRANT_TYPE_PASSWORD)
                 .asDictionary();
 
         return loginWithToken(requestParameters);
