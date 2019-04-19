@@ -84,6 +84,7 @@ public class AuthenticationAPIClient {
     private static final String TOKEN_KEY = "token";
     private static final String MFA_TOKEN_KEY = "mfa_token";
     private static final String ONE_TIME_PASSWORD_KEY = "otp";
+    private static final String AUDIENCE_KEY = "audience";
     private static final String DELEGATION_PATH = "delegation";
     private static final String ACCESS_TOKEN_PATH = "access_token";
     private static final String SIGN_UP_PATH = "signup";
@@ -238,6 +239,37 @@ public class AuthenticationAPIClient {
                 .set(USERNAME_KEY, usernameOrEmail)
                 .set(PASSWORD_KEY, password)
                 .setGrantType(GRANT_TYPE_PASSWORD)
+                .asDictionary();
+
+        return loginWithToken(requestParameters);
+    }
+
+    /**
+     * Log in a user with email/username and password using the provided audience
+     * Example usage:
+     * <pre>
+     * {@code
+     * client.login("{username or email}", "{password}", "{audience}")
+     *      .start(new BaseCallback<Credentials>() {
+     *          {@literal}Override
+     *          public void onSuccess(Credentials payload) { }
+     *
+     *          {@literal}Override
+     *          public void onFailure(AuthenticationException error) { }
+     *      });
+     * }
+     * </pre>
+     *
+     * @param usernameOrEmail of the user
+     * @param password        of the user
+     * @param audience        the desired audience
+     * @return a request to configure and start that will yield {@link Credentials}
+     */
+    public AuthenticationRequest loginWithAudience(@NonNull String usernameOrEmail, @NonNull String password, @NonNull String audience) {
+        Map<String, Object> requestParameters = ParameterBuilder.newBuilder()
+                .set(USERNAME_KEY, usernameOrEmail)
+                .set(PASSWORD_KEY, password)
+                .set(AUDIENCE_KEY, audience)
                 .asDictionary();
 
         return loginWithToken(requestParameters);
